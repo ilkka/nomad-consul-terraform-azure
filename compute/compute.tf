@@ -4,6 +4,7 @@ variable "prefix" {}
 variable "net_prefix_16bit" {}
 variable "ssh_key_path" {}
 variable "organization_name" {}
+variable "image_id" {}
 
 variable "count" {
   default = "3"
@@ -36,10 +37,7 @@ resource "azurerm_virtual_machine_scale_set" "nodes" {
   }
 
   storage_profile_image_reference {
-    publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "16.04-LTS"
-    version   = "latest"
+    id = "${var.image_id}"
   }
 
   storage_profile_os_disk {

@@ -18,6 +18,7 @@ resource "azurerm_resource_group" "consul" {
 module "compute" {
   source            = "./compute"
   prefix            = "consul"
+  image_id          = "${var.consul_image_id}"
   resource_group    = "${azurerm_resource_group.consul.name}"
   location          = "${var.region}"
   net_prefix_16bit  = "10.0"
