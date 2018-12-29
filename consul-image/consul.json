@@ -6,7 +6,7 @@
     "client_id": "{{env `ARM_CLIENT_ID`}}",
     "client_secret": "{{env `ARM_CLIENT_SECRET`}}",
     "azure_location": "westeurope",
-    "resource_group_name": "consul-resources",
+    "resource_group_name": "nomadtest",
     "consul_version": "0.9.2"
   },
   "builders": [
@@ -36,11 +36,11 @@
         "apt-get update && apt-get install -y git libssl-dev libffi-dev python-dev build-essential apt-transport-https azure-cli",
         "DEBIAN_FRONTEND=noninteractive apt-get -y upgrade",
         "git clone --branch v0.0.5 https://github.com/hashicorp/terraform-azurerm-consul.git /tmp/terraform-azurerm-consul",
-        "/tmp/terraform-azurerm-consul/tree/master/modules/install-consul/install-consul --version {{user `consul_version`}}",
-        "/tmp/terraform-azurerm-consul/tree/master/modules/install-dnsmasq/install-dnsmasq",
+        "/tmp/terraform-azurerm-consul/modules/install-consul/install-consul --version {{user `consul_version`}}",
+        "/tmp/terraform-azurerm-consul/modules/install-dnsmasq/install-dnsmasq",
         "/usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync"
       ],
-      "inline_shebang": "/bin/sh -x",
+      "inline_shebang": "/bin/sh -xe",
       "pause_before": "30s"
     }
   ]
