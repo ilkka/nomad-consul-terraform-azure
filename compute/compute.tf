@@ -5,6 +5,7 @@ variable "net_prefix_16bit" {}
 variable "ssh_key_path" {}
 variable "organization_name" {}
 variable "image_id" {}
+variable "run_command" {}
 
 variable "count" {
   default = "3"
@@ -84,4 +85,21 @@ resource "azurerm_virtual_machine_scale_set" "nodes" {
       }
     }
   }
+
+  extension {
+    name                 = "provision"
+    publisher            = "Microsoft.Azure.Extensions"
+    type                 = "CustomScript"
+    type_handler_version = "2.0"
+
+    settings = <<SETTINGS
+    {
+      "commandToExecute": "${var.run_command}"
+    }
+    SETTINGS
+  }
+}
+
+output "scale_set_name" {
+  value = "${azurerm_virtual_machine_scale_set.nodes.name}"
 }
