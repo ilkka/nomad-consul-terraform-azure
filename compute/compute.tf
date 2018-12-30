@@ -1,28 +1,27 @@
 variable "resource_group" {}
 variable "location" {}
 variable "prefix" {}
-variable "net_prefix_16bit" {}
 variable "ssh_key_path" {}
 variable "organization_name" {}
 variable "image_id" {}
 variable "run_command" {}
+variable "virtual_network_name" {}
+variable "subnet_address_prefix" {}
 
-variable "count" {
+variable "cluster_size" {
   default = "3"
 }
 
-resource "azurerm_virtual_network" "main" {
-  name                = "${var.prefix}-vnet"
-  address_space       = ["${var.net_prefix_16bit}.0.0/16"]
-  location            = "${var.location}"
+data "azurerm_virtual_network" "main" {
+  name                = "${var.virtual_network_name}"
   resource_group_name = "${var.resource_group}"
 }
 
 resource "azurerm_subnet" "internal" {
   name                 = "internal"
   resource_group_name  = "${var.resource_group}"
-  virtual_network_name = "${azurerm_virtual_network.main.name}"
-  address_prefix       = "${var.net_prefix_16bit}.2.0/24"
+  virtual_network_name = "${data.azurerm_virtual_network.main.name}"
+  address_prefix       = "${var.subnet_address_prefix}"
 }
 
 resource "azurerm_virtual_machine_scale_set" "nodes" {
@@ -32,7 +31,7 @@ resource "azurerm_virtual_machine_scale_set" "nodes" {
   upgrade_policy_mode = "Manual"
 
   sku {
-    capacity = "${var.count}"
+    capacity = "${var.cluster_size}"
     name     = "Standard_F2"
     tier     = "Standard"
   }
