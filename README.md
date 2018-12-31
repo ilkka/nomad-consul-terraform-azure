@@ -16,10 +16,9 @@ Let's see.
 
    - `ARM_CLIENT_SECRET`: service principal password from above, or `az ad sp credential reset --name Packer`
 
-1. In `consul-image`, run `packer build consul.json` to build a Consul image
-1. Grab the full slash-delimited image ID from `az image list`
+1. In `consul-image`, run `packer build consul.json` to build a Consul image (we will just grab the latest version of this image automagically)
 1. In the root directory, `terraform init -backend-config="access_key=ACCESS-KEY-HERE"`
-1. In the root directory, `terraform apply -var="consul_image_id=IMAGE-ID-HERE` to generate
+1. In the root directory, `terraform apply` to generate
 
 ## TODO
 
