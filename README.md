@@ -1,4 +1,4 @@
-# Consul backend Nomad cluster?
+# Consul backed Nomad cluster?
 
 Let's see.
 
